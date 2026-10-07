@@ -55,12 +55,12 @@ def agregarProducto(codigo, nombre, precio, stock):
     if stock < 0:
         ultimo_error = "stock invalido"
         return False
-    producto = {}
-    producto["codigo"] = codigo
-    producto["nombre"] = nombre
-    producto["precio"] = precio
-    producto["stock"] = stock
-    INVENTARIO[codigo] = producto
+    INVENTARIO[codigo] = {
+        "codigo": codigo,
+        "nombre": nombre,
+        "precio": precio,
+        "stock": stock,
+    }
     return True
 
 
@@ -90,11 +90,11 @@ def actualizar_stock(codigo, cantidad):
 
 def buscarProducto(texto):
     # busca productos cuyo nombre contenga el texto (sin importar mayusculas)
-    encontrados = []
-    for codigo in INVENTARIO:
-        if texto.lower() in INVENTARIO[codigo]["nombre"].lower():
-            encontrados.append(INVENTARIO[codigo])
-    return encontrados
+    return [
+        producto
+        for producto in INVENTARIO.values()
+        if texto.lower() in producto["nombre"].lower()
+    ]
 
 
 def calcular_descuento_por_volumen(subtotal):
