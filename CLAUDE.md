@@ -54,25 +54,31 @@ está en la raíz, la aplicación inicia sin datos y al guardar crea
 `src/datos_ejemplo.json`. No ejecutarlo sobre datos reales sin autorización. Para una comprobación manual, usar una
 copia temporal de los datos y conservar el archivo original.
 
-## Arquitectura actual
+## Arquitectura
 
 Todo el código fuente está en `src/`. No hay paquete: los módulos se importan
 directamente entre sí. Los tests agregan `src/` al `sys.path` en `conftest.py`.
 
 - **gestor.py**: lógica de negocio. Maneja el estado global (`INVENTARIO`,
-  `VENTAS`, `contadorVentas`, `ultimo_error`), productos, ventas y cotizaciones.
-- **almacen.py**: persistencia en JSON. Lee y escribe el estado de `gestor`.
+  `VENTAS`, `contador_ventas`, `ultimo_error`), productos, ventas y
+  cotizaciones. Las reglas de negocio son constantes al inicio del módulo
+  (`TASA_IVA`, umbrales y tasas de descuento, reglas VIP). El cálculo de
+  precios vive en `calcular_descuento_por_volumen()`, `calcular_descuento()`
+  y `calcular_iva()`, compartidas por `registrar_venta()` y `cotizar()`.
+- **almacen.py**: persistencia en JSON con `guardar_datos()`, `cargar_datos()`
+  y `existe_archivo()`. Lee y escribe el estado de `gestor`.
 - **reportes.py**: inventario, resumen de ventas, más vendidos y alertas de stock
-  bajo. Lee el estado de `gestor`.
-- **main.py**: menú interactivo y punto de entrada. Lee y guarda
+  bajo (umbral `STOCK_MINIMO`). Lee el estado de `gestor`.
+- **main.py**: menú interactivo y punto de entrada. Cada opción tiene su propia
+  función y el diccionario `ACCIONES` las asocia. Lee y guarda
   `datos_ejemplo.json` en el directorio de trabajo de la aplicación.
 
 El estado global de `gestor.py` es el almacén central de datos. Otros módulos
 lo leen y modifican directamente. Los tests lo reinician mediante
 `gestor.reiniciar_sistema()` antes y después de cada prueba.
 
-Esta sección describe la arquitectura inicial, no exige conservar todos sus
-problemas. Cualquier mejora interna debe mantener la compatibilidad existente.
+Esta sección describe la arquitectura después de la refactorización. Cualquier
+mejora interna debe mantener la compatibilidad existente.
 
 ## API pública y contrato de comportamiento
 
