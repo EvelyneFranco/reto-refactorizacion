@@ -11,9 +11,9 @@ OPCION_SALIR = "8"
 def pedir_numero(mensaje):
     # pide un numero al usuario hasta que escriba algo valido
     while True:
-        temp2 = input(mensaje)
+        respuesta = input(mensaje)
         try:
-            return float(temp2)
+            return float(respuesta)
         except ValueError:
             print("Eso no es un numero, intenta de nuevo.")
 
@@ -31,40 +31,40 @@ def mostrar_menu():
 
 
 def opcion_agregar_producto():
-    c = input("Codigo: ")
-    n = input("Nombre: ")
-    p = pedir_numero("Precio: ")
-    s = int(pedir_numero("Stock inicial: "))
-    if gestor.agregarProducto(c, n, p, s):
+    codigo = input("Codigo: ")
+    nombre = input("Nombre: ")
+    precio = pedir_numero("Precio: ")
+    stock = int(pedir_numero("Stock inicial: "))
+    if gestor.agregarProducto(codigo, nombre, precio, stock):
         print("Producto agregado.")
     else:
         print("Error:", gestor.ultimo_error)
 
 
 def opcion_registrar_venta():
-    c = input("Codigo del producto: ")
-    cant = int(pedir_numero("Cantidad: "))
-    cli = input("Codigo de cliente (enter si no tiene): ")
-    v = gestor.registrar_venta(c, cant, cli)
-    if v is not None:
-        print(v["ticket"])
+    codigo = input("Codigo del producto: ")
+    cantidad = int(pedir_numero("Cantidad: "))
+    cliente = input("Codigo de cliente (enter si no tiene): ")
+    venta = gestor.registrar_venta(codigo, cantidad, cliente)
+    if venta is not None:
+        print(venta["ticket"])
     else:
         print("Error:", gestor.ultimo_error)
 
 
 def opcion_cotizar():
-    c = input("Codigo del producto: ")
-    cant = int(pedir_numero("Cantidad: "))
-    t = gestor.cotizar(c, cant)
-    if t is not None:
-        print("Total estimado (con IVA): $" + str(t))
+    codigo = input("Codigo del producto: ")
+    cantidad = int(pedir_numero("Cantidad: "))
+    total = gestor.cotizar(codigo, cantidad)
+    if total is not None:
+        print("Total estimado (con IVA): $" + str(total))
     else:
         print("Error:", gestor.ultimo_error)
 
 
 def opcion_mas_vendidos():
-    for par in reportes.mas_vendidos():
-        print(par[0], "->", par[1], "unidades")
+    for codigo, unidades in reportes.mas_vendidos():
+        print(codigo, "->", unidades, "unidades")
 
 
 def opcion_stock_bajo():
@@ -72,8 +72,10 @@ def opcion_stock_bajo():
     if len(bajos) == 0:
         print("No hay productos con stock bajo.")
     else:
-        for p in bajos:
-            print("OJO:", p["nombre"], "solo tiene", p["stock"], "unidades")
+        for producto in bajos:
+            print(
+                "OJO:", producto["nombre"], "solo tiene", producto["stock"], "unidades"
+            )
 
 
 # Cada opcion del menu y la funcion que la atiende
@@ -95,12 +97,12 @@ def menu():
         print("Datos cargados de", ARCHIVO)
     while True:
         mostrar_menu()
-        op = input("Opcion: ")
-        if op == OPCION_SALIR:
+        opcion = input("Opcion: ")
+        if opcion == OPCION_SALIR:
             almacen.guardar_datos(ARCHIVO)
             print("Datos guardados. Hasta luego.")
             break
-        accion = ACCIONES.get(op)
+        accion = ACCIONES.get(opcion)
         if accion is None:
             print("Opcion no valida.")
         else:
