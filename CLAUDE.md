@@ -152,7 +152,7 @@ Al iniciar una sesión:
    Ruff resueltos y pendientes. No introducir nuevos diagnósticos de Ruff;
    la meta final es **0 errores**. No exigir cero en cada paso si todavía
    existen errores de la línea base.
-6. Agregar o actualizar la entrada correspondiente en `BITACORA.md`.
+6. Agregar o actualizar la entrada correspondiente en `docs/bitacora.md`.
 7. Presentar el cambio y la validación para revisión. **No hacer commit hasta
    que la usuaria dé el visto bueno para ese cambio**.
 8. Tras la aprobación, crear un commit atómico con mensaje en español,
@@ -168,12 +168,12 @@ ni presentar validaciones pendientes como aprobadas.
 ## Bitácora
 
 Git registra cambios de archivos y commits; **no registra automáticamente los
-prompts de Claude**. Guardar el texto real de los prompts en `BITACORA.md`.
+prompts de Claude**. Guardar el texto real de los prompts en `docs/bitacora.md`.
 No reconstruir ni inventar un prompt que no esté disponible: solicitarlo o
 marcarlo como pendiente.
 
-Respetar exactamente el formato de `BITACORA_TEMPLATE.md`, sin agregar ni
-quitar columnas o secciones. Una fila por refactorización en la tabla:
+Respetar el formato de tabla de `BITACORA_TEMPLATE.md`, sin agregar ni quitar
+columnas. Una fila por refactorización:
 
 | # | Prompt usado | Cambio realizado | Justificación | Tests OK |
 
@@ -184,8 +184,10 @@ quitar columnas o secciones. Una fila por refactorización en la tabla:
 - **Tests OK**: resultado real de `pytest` después del cambio.
 
 Agregar filas si hay más de 5 refactorizaciones. Si se corrige o se vuelve a
-validar un cambio, actualizar su misma fila. La reflexión final (10-15 líneas)
-la escribe la usuaria; no redactarla por ella.
+validar un cambio, actualizar su misma fila.
+
+La reflexión final (10-15 líneas) va en `docs/reflexion.md`. La escribe la
+usuaria; no redactarla por ella.
 
 ## Convenciones de código
 
