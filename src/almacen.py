@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Persistencia del gestor: carga y guardado de datos en JSON."""
 
 import json
@@ -13,9 +12,8 @@ def guardar_datos(ruta):
     datos["inventario"] = gestor.INVENTARIO
     datos["ventas"] = gestor.VENTAS
     datos["contador"] = gestor.contador_ventas
-    f = open(ruta, "w", encoding="utf-8")
-    json.dump(datos, f, indent=2, ensure_ascii=False)
-    f.close()
+    with open(ruta, "w", encoding="utf-8") as archivo:
+        json.dump(datos, archivo, indent=2, ensure_ascii=False)
     return True
 
 
@@ -24,17 +22,15 @@ def cargar_datos(ruta):
 
     Regresa False si el archivo no existe o esta corrupto.
     """
-    if not os.path.exists(ruta):
+    if not existe_archivo(ruta):
         gestor.ultimo_error = "el archivo no existe"
         return False
-    f = open(ruta, "r", encoding="utf-8")
-    try:
-        datos = json.load(f)
-    except Exception:
-        f.close()
-        gestor.ultimo_error = "archivo corrupto"
-        return False
-    f.close()
+    with open(ruta, encoding="utf-8") as archivo:
+        try:
+            datos = json.load(archivo)
+        except Exception:
+            gestor.ultimo_error = "archivo corrupto"
+            return False
     gestor.INVENTARIO.clear()
     for codigo in datos["inventario"]:
         gestor.INVENTARIO[codigo] = datos["inventario"][codigo]
@@ -45,9 +41,6 @@ def cargar_datos(ruta):
     return True
 
 
-def hayArchivo(ruta):
-    # checa si ya existe el archivo de datos
-    if os.path.exists(ruta):
-        return True
-    else:
-        return False
+def existe_archivo(ruta):
+    """Indica si ya existe el archivo de datos."""
+    return os.path.exists(ruta)
