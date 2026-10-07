@@ -32,25 +32,32 @@ Code como asistente.
 
 ## Instalación y ejecución
 
-Requiere Python 3.10 o superior.
+**Requisitos previos:** Python 3.10 o superior (probado con 3.12) y Git.
+Dependencias de desarrollo: `pytest>=8.0` y `ruff>=0.6` (en `requirements.txt`).
 
 ```bash
-# 1. Crear y activar un entorno virtual
+# 1. Clonar el repositorio (rama con el código refactorizado) y entrar a la carpeta
+git clone -b refactorizacion https://github.com/EvelyneFranco/reto-refactorizacion.git
+cd reto-refactorizacion
+
+# 2. Crear y activar un entorno virtual
 python -m venv .venv
 source .venv/bin/activate        # En Windows: .venv\Scripts\activate
 
-# 2. Instalar dependencias
+# 3. Instalar dependencias
 pip install -r requirements.txt
 
-# 3. Ejecutar la suite de pruebas (deben pasar TODAS)
+# 4. Ejecutar la suite de pruebas (deben pasar TODAS)
 pytest
 
-# 4. Ejecutar el linter (al inicio reporta ~20 problemas; al final: 0)
+# 5. Ejecutar el linter (código original: 20 errores; refactorizado: 0)
 ruff check src
 
-# 5. (Opcional) Probar la aplicación interactiva
+# 6. (Opcional) Probar la aplicación interactiva
 cd src && python main.py
 ```
+
+La evidencia de tests y linter está en [docs/evidencia_tests.md](docs/evidencia_tests.md).
 
 ## Instrucciones del reto
 
